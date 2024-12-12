@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Pedido</title>
+    <style>
+        /* Estilo global */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            color: #0088cc;
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        /* Contenedor principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Detalles del pedido */
+        .pedido-details {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 20px;
+        }
+        
+        .pedido-details p {
+            font-size: 1.2em;
+            color: #444;
+            margin-bottom: 15px;
+        }
+        
+        .pedido-details h2 {
+            font-size: 1.8em;
+            color: #0088cc;
+            margin-bottom: 15px;
+        }
+        
+        .pedido-details h3 {
+            font-size: 1.5em;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        .pedido-details ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .pedido-details ul li {
+            font-size: 1.1em;
+            color: #555;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        
+        .pedido-details ul li:last-child {
+            border-bottom: none;
+        }
+
+        /* Responsividad */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Detalles del Pedido</h1>
+        <div class="pedido-details">
+            <p><strong>Dirección:</strong> {{.Client.Direction}}</p>
+            <h2>Productos</h2>
+            <ul>
+                {{range .Products}}
+                <li>{{.Name}} - Cantidad: 2 - Precio: Gs.{{.Price}}</li>
+                {{end}}
+            </ul>
+            <h3>Total: ${{.Total}}</h3>
+            <p><strong>Status:</strong> {{.Status}}</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-8">
+    <h1 class="text-2xl font-bold mb-6">Lista de Productos</h1>
+
+    <table class="w-full border-collapse border border-gray-300">
+        <thead>
+            <tr class="bg-gray-100">
+                <th class="border border-gray-300 p-2">ID</th>
+                <th class="border border-gray-300 p-2">Nombre</th>
+                <th class="border border-gray-300 p-2">Precio</th>
+                <th class="border border-gray-300 p-2">Imagen</th>
+                <th class="border border-gray-300 p-2">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% viewProduct.forEach(product => { %>
+                <tr class="border border-gray-300">
+                    <td class="p-2 border border-gray-300"><%= product._id %></td>
+                    <td class="p-2 border border-gray-300"><%= product.name %></td>
+                    <td class="p-2 border border-gray-300"><%= product.price %></td>
+                    <td class="p-2 border border-gray-300">
+                        <img src="<%= product.image %>" alt="Imagen de <%= product.name %>" class="w-24 h-24 object-cover">
+                    </td>
+                    <td class="p-2 border border-gray-300">
+                        <button class="px-4 py-2 border border-gray-300" onclick="loadProduct('<%= product._id %>', '<%= product.name %>', '<%= product.price %>', '<%= product.image %>')">Editar</button>
+                        <form action="/product/delete?token=<%= token %>" method="POST" class="inline-block">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="id" value="<%= product._id %>">
+                            <button type="submit" class="px-4 py-2 border border-gray-300">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <h2 class="text-xl font-bold mt-8 mb-4">Formulario de Producto</h2>
+
+    <form id="productForm" action="/product/add?token=<%= token %>" method="POST" class="space-y-4">
+        <input type="hidden" id="formMethod" name="_method" value="POST">
+
+        <div class="flex flex-col">
+            <label for="id" class="mb-2">ID (Solo para actualizar):</label>
+            <input type="text" id="id" name="id" readonly class="border border-gray-300 p-2">
+        </div>
+
+        <div class="flex flex-col">
+            <label for="name" class="mb-2">Nombre:</label>
+            <input type="text" id="name" name="name" required class="border border-gray-300 p-2">
+        </div>
+
+        <div class="flex flex-col">
+            <label for="price" class="mb-2">Precio:</label>
+            <input type="number" id="price" name="price" required class="border border-gray-300 p-2">
+        </div>
+
+        <div class="flex flex-col">
+            <label for="image" class="mb-2">Imagen (URL):</label>
+            <input type="text" id="image" name="image" required class="border border-gray-300 p-2">
+        </div>
+
+        <button type="submit" id="submitButton" class="px-4 py-2 border border-gray-300">Agregar Producto</button>
+    </form>
+
+    <button onclick="window.location.href='/order/view?token=<%= token %>'" class="mt-8 px-4 py-2 border border-gray-300">
+        Ver Órdenes
+    </button>
+
+    <script>
+        function loadProduct(id, name, price, image) {
+            document.getElementById('id').value = id;
+            document.getElementById('name').value = name;
+            document.getElementById('price').value = price;
+            document.getElementById('image').value = image;
+            
+            const form = document.getElementById('productForm');
+            form.action = '/product/update?token=<%= token %>';
+            document.getElementById('formMethod').value = 'PATCH';
+            document.getElementById('submitButton').textContent = 'Actualizar Producto';
+        }
+
+        function resetForm() {
+            document.getElementById('id').value = '';
+            document.getElementById('name').value = '';
+            document.getElementById('price').value = '';
+            document.getElementById('image').value = '';
+            
+            const form = document.getElementById('productForm');
+            form.action = '/product/add?token=<%= token %>';
+            document.getElementById('formMethod').value = 'POST';
+            document.getElementById('submitButton').textContent = 'Agregar Producto';
+        }
+
+        window.onload = resetForm;
+    </script>
+</body>
+</html>

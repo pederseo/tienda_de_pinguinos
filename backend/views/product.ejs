@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+</head>
+<body>
+    <h1>Lista de Productos</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Imagen</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% viewProduct.forEach(product => { %>
+                <tr>
+                    <td><%= product._id %></td>
+                    <td><%= product.name %></td>
+                    <td><%= product.price %></td>
+                    <td>
+                        <img src="<%= product.image %>" alt="Imagen de <%= product.name %>" width="100" height="100">
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <h2>Agregar Nuevo Producto</h2>
+
+    <form action="/product/add?token=<%= token %>" method="POST">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required>
+        <br><br>
+
+        <label for="price">Precio:</label>
+        <input type="number" id="price" name="price" required>
+        <br><br>
+
+        <label for="image">Imagen (URL):</label>
+        <input type="text" id="image" name="image" required>
+        <br><br>
+
+        <button type="submit">Agregar Producto</button>
+    </form>
+
+    <h2>Actualizar Producto</h2>
+
+    <form action="/product/update?token=<%= token %>" method="POST">
+        <!-- Campo oculto para cambiar el método a PATCH -->
+        <input type="hidden" name="_method" value="PATCH">
+        
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id" required>
+        <br><br>
+
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required>
+        <br><br>
+
+        <label for="price">Precio:</label>
+        <input type="number" id="price" name="price" required>
+        <br><br>
+
+        <label for="image">Imagen (URL):</label>
+        <input type="text" id="image" name="image" required>
+        <br><br>
+
+        <button type="submit">Actualizar Producto</button>
+    </form>
+    <form action="/product/delete?token=<%= token %>" method="POST">
+        <!-- Campo oculto para cambiar el método a PATCH -->
+        <input type="hidden" name="_method" value="DELETE">
+        
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id" required>
+
+        <button type="submit">delete product</button>
+    </form>
+    <br><br>
+    <button onclick="window.location.href='/order/view?token=<%= token %>'">
+        Ver Órdenes
+    </button>
+
+</body>
+</html>
